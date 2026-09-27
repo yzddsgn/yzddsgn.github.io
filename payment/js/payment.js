@@ -36,6 +36,15 @@ let requiresSize = false;
 
 
 // =====================================================
+// USER YANG SEDANG LOGIN
+// Dipakai nanti untuk menghapus produk dari cart
+// (localStorage) setelah pesanan berhasil dikirim.
+// =====================================================
+
+let loggedInUser = null;
+
+
+// =====================================================
 // LABEL JENIS PRODUK
 // Dipakai untuk menampilkan "(T-Shirt)" / "(Poster)" /
 // "(Mug)" di pesan WhatsApp yang dikirim ke owner.
@@ -65,6 +74,8 @@ onAuthStateChanged(auth, (user) => {
         window.location.href = "https://yzddsgn.biz.id/login/index.html";
         return;
     }
+
+    loggedInUser = user;
 
     const checkout =
         JSON.parse(
@@ -363,6 +374,65 @@ function showPaymentAlert(title, message, type = "error") {
 
 
 
+// =====================================================
+// HAPUS PRODUK YANG SUDAH DIBELI DARI CART
+// Dipanggil setelah pesanan berhasil dikirim ke WhatsApp.
+// =====================================================
+
+function removePurchasedFromCart() {
+
+    if (!loggedInUser) {
+        return;
+    }
+
+    const cartKey =
+        "cart_" + loggedInUser.uid;
+
+    let existingCart = [];
+
+    try {
+
+        existingCart =
+            JSON.parse(
+                localStorage.getItem(cartKey)
+            ) || [];
+
+    } catch (error) {
+
+        existingCart = [];
+    }
+
+    const indexes =
+        JSON.parse(
+            sessionStorage.getItem("checkoutIndexes")
+        ) || [];
+
+    // Urutkan dari besar ke kecil supaya index
+    // yang lain tidak bergeser saat dihapus satu-satu.
+    indexes
+        .sort(function (a, b) {
+            return b - a;
+        })
+        .forEach(function (idx) {
+
+            if (
+                idx >= 0 &&
+                idx < existingCart.length
+            ) {
+
+                existingCart.splice(idx, 1);
+
+            }
+
+        });
+
+    localStorage.setItem(
+        cartKey,
+        JSON.stringify(existingCart)
+    );
+}
+
+
 document.getElementById("payNow").addEventListener("click", function () {
 
     const name =
@@ -599,5 +669,20 @@ document.getElementById("payNow").addEventListener("click", function () {
         whatsappURL,
         "_blank"
     );
+
+
+    // -------------------------------------------------
+    // SETELAH PESAN TERKIRIM:
+    // 1. Hapus produk yang baru saja dibeli dari cart
+    // 2. Bersihkan data checkout sementara
+    // 3. Kembali ke halaman keranjang
+    // -------------------------------------------------
+
+    removePurchasedFromCart();
+
+    sessionStorage.removeItem("checkout");
+    sessionStorage.removeItem("checkoutIndexes");
+
+    window.location.href = "https://yzddsgn.biz.id/cart/";
 
 });
