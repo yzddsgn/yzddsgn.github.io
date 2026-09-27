@@ -745,11 +745,6 @@ section {
     object-fit: cover;
     border-radius: 6px;
     filter: grayscale(6%) contrast(1.02);
-    transition: transform .4s ease;
-}
-
-.card:hover img {
-    transform: scale(1.03);
 }
 
 .info {
