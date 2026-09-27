@@ -728,7 +728,8 @@ section {
 /* Card minimalis — ala toko distro/streetwear modern:
    nggak ada border/box tebal, fokus ke foto & tipografi. */
 .card {
-    flex: 0 0 clamp(150px, 18vw, 235px);
+    flex: 0 0 clamp(230px, 26vw, 280px);
+    max-width: 280px;
     scroll-snap-align: start;
     background: transparent;
     border: none;
@@ -740,7 +741,7 @@ section {
 
 .card img {
     width: 100%;
-    aspect-ratio: 3 / 4;
+    aspect-ratio: 4 / 3;
     height: auto;
     object-fit: cover;
     border-radius: 6px;
@@ -809,19 +810,25 @@ section {
 }
 
 .delete {
-    width: 100%;
-    padding: clamp(10px, 2.2vw, 12px);
-    margin-top: 5px;
-    border: none;
-    background: #df0a0a;
-    color: white;
-    font-weight: 800;
-    font-size: clamp(12px, 2.8vw, 16px);
+    display: inline-block;
+    width: auto;
+    padding: clamp(6px, .8vw, 7px) clamp(13px, 1.6vw, 16px);
+    border: 1px solid currentColor;
+    background: transparent;
+    color: #0d0d0d;
+    font-weight: 600;
+    font-size: clamp(10px, 1.1vw, 11px);
     text-transform: uppercase;
     letter-spacing: .5px;
-    border-radius: 6px;
+    border-radius: 999px;
     cursor: pointer;
     transition: .2s ease;
+}
+
+.delete:hover {
+    background: #f50b0b;
+    border-color: #f50b0b;
+    color: white;
 }
 
 /* ===================================================
@@ -925,14 +932,22 @@ section {
     color: #ffffff;
 }
 
-/* ---- Tablet: grid 2 kolom, sidebar tetap kiri ---- */
+/* ---- Tablet & mode "Desktop site" di browser mobile: grid 2 kolom,
+   sidebar tetap kiri. Gap di-hardcode 18px (nilai maksimum clamp
+   yang dipakai .grid di versi PC/laptop) supaya jaraknya identik,
+   bukan ikut mengecil karena vw dari viewport yang lebih sempit. ---- */
 @media (max-width: 1024px) {
     .shop-content .grid {
         grid-template-columns: repeat(2, 1fr);
+        gap: 18px;
     }
 }
 
-/* ---- Mobile: sidebar jadi filter horizontal di atas, grid di bawah ---- */
+/* ---- Mobile: sidebar jadi filter horizontal di atas, grid di bawah.
+   grid-template-columns dipaksa 1fr dengan !important supaya
+   selalu menang atas aturan tablet (1024px) di atas, berapa pun
+   urutan/spesifisitas nanti berubah. Berlaku dari 768px ke bawah
+   sampai layar paling kecil (320px / iPhone 4-5). ---- */
 @media (max-width: 768px) {
     .shop-layout {
         flex-direction: column;
@@ -976,19 +991,53 @@ section {
         scroll-snap-align: start;
     }
 
+    .shop-content .grid,
+    .shop-content .grid.grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* .shop-layout punya align-items:flex-start (dipakai untuk versi
+       desktop). Di mobile di-reset ke stretch supaya .shop-content
+       (dan .shop-sidebar) sama-sama selebar penuh container-nya. */
+    .shop-layout {
+        align-items: stretch;
+    }
+
+    /* Card produk Shop TIDAK lagi full-bleed — lebar kiri-kanannya
+       disamakan dengan .shop-sidebar, yaitu cuma mengikuti lebar
+       normal .container/.shop-content (padding bawaan <section>),
+       tanpa margin negatif/breakout apa pun. */
     .shop-content .grid {
-        grid-template-columns: 1fr;
+        width: 100%;
+    }
+
+    .shop-content .grid .card {
+        width: 100% !important;
+        max-width: 100% !important;
+        flex: unset !important;
+        flex-basis: auto !important;
     }
 }
 
 /* Shop page grid: 1 kolom di semua ukuran mobile
-   (termasuk iPhone 4/5 320px). */
+   (termasuk iPhone 4/5 320px) — dipertegas lagi di sini
+   supaya aman walau ada perubahan lain di atas. */
+
+@media (max-width: 600px) {
+    .shop-content .grid {
+        grid-template-columns: 1fr !important;
+    }
+}
 
 /* iPhone 4/5 (320px) */
 @media (max-width: 340px) {
     .shop-sidebar .filter button {
         padding: 8px 14px;
         font-size: 11px;
+    }
+
+    .shop-content .grid {
+        grid-template-columns: 1fr !important;
     }
 }
 
@@ -1099,6 +1148,10 @@ section {
     letter-spacing: .5px;
     color: #0d0d0d;
     margin-bottom: 10px;
+}
+
+.blog-body h3:hover {
+    color: #5a8a00;
 }
 
 .blog-ig {
@@ -1247,12 +1300,10 @@ section {
     color: #b3b3b3;
     text-decoration: none;
     font-size: clamp(11.5px, 1.5vw, 12.5px);
-    transition: color 0.2s ease, padding-left 0.2s ease;
 }
 
 .footer-col ul li a:hover {
     color: #b7ff00;
-    padding-left: 4px;
 }
 
 .footer-contact li {
