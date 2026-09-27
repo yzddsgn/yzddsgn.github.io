@@ -1533,3 +1533,276 @@ section {
         padding: 70px 24px 24px;
     }
 }
+
+
+
+/* ===================================================
+   BLOG POST (artikel tunggal) — TAMBAHAN, tempel di
+   paling bawah style.css yang sudah ada. Tidak menimpa
+   / mengubah rule apa pun yang sudah ada sebelumnya.
+   Dipakai di halaman /blogs/<slug>/, contoh:
+   /blogs/harmoni-tradisi-dan-modernitas-cerita-di-balik-desain-kaos-bandung/
+=================================================== */
+.post-hero {
+    background: #ffffff;
+    padding: clamp(90px, 14vw, 120px) clamp(12px, 2.2vw, 18px) 0;
+}
+
+.post-hero-frame {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.post-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: clamp(10px, 1.1vw, 11.5px);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    color: #666666;
+    margin-bottom: clamp(14px, 2.4vw, 18px);
+    transition: color .2s ease;
+}
+
+.post-back svg {
+    width: 13px;
+    height: 13px;
+}
+
+.post-back:hover {
+    color: #0d0d0d;
+}
+
+.post-hero-media {
+    width: 100%;
+    aspect-ratio: 16 / 8;
+    overflow: hidden;
+    border-radius: 10px;
+    background: #eeeeee;
+}
+
+.post-hero-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: grayscale(4%) contrast(1.02);
+}
+
+@media (max-width: 1024px) {
+    .post-hero-media {
+        aspect-ratio: 16 / 10;
+    }
+}
+
+@media (max-width: 600px) {
+    .post-hero-media {
+        aspect-ratio: 4 / 3;
+        border-radius: 6px;
+    }
+}
+
+@media (max-width: 400px) {
+    .post-hero-media {
+        aspect-ratio: 1 / 1;
+    }
+}
+
+.post-header {
+    background: #ffffff;
+    padding: clamp(24px, 4vw, 34px) clamp(12px, 2.2vw, 18px) 0;
+}
+
+.post-header-inner {
+    max-width: 780px;
+    margin: 0 auto;
+}
+
+/* Judul artikel — diperkecil dari sebelumnya (clamp(24px,4.4vw,40px)) */
+.post-title {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(19px, 3.2vw, 30px);
+    font-weight: 400;
+    line-height: 1.25;
+    letter-spacing: .5px;
+    text-transform: uppercase;
+    color: #0d0d0d;
+}
+
+/* Meta (kategori, tanggal, menit baca) — diperkecil */
+.post-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin-top: clamp(10px, 2vw, 14px);
+    font-size: clamp(9.5px, 1.1vw, 10.5px);
+    font-weight: 700;
+    letter-spacing: .5px;
+    text-transform: uppercase;
+    color: #8a8a8a;
+}
+
+.post-meta .post-cat {
+    color: #5a8a00;
+    background: #eef8d8;
+    padding: 3px 10px;
+    border-radius: 999px;
+}
+
+.post-body {
+    background: #ffffff;
+    color: #111111;
+    padding: clamp(24px, 4vw, 34px) clamp(12px, 2.2vw, 18px) clamp(48px, 7vw, 70px);
+}
+
+.post-body-inner {
+    max-width: 780px;
+    margin: 0 auto;
+}
+
+/* Paragraf isi artikel — diperkecil dari sebelumnya (clamp(14px,1.6vw,16px)) */
+.post-body-inner p {
+    font-size: clamp(12.5px, 1.3vw, 14px);
+    line-height: 1.8;
+    color: #333333;
+    margin-bottom: clamp(16px, 2.4vw, 20px);
+}
+
+/* Paragraf pembuka (lead) — diperkecil */
+.post-body-inner p.lead {
+    font-size: clamp(13.5px, 1.5vw, 15.5px);
+    color: #111111;
+    font-weight: 500;
+}
+
+.post-body-inner p em,
+.post-body-inner p i {
+    font-style: italic;
+}
+
+/* Sub-judul dalam artikel — diperkecil */
+.post-body-inner h2 {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(15.5px, 2vw, 19px);
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    color: #0d0d0d;
+    margin: clamp(28px, 4vw, 38px) 0 clamp(12px, 2vw, 16px);
+}
+
+/* Kutipan — diperkecil */
+.post-body-inner blockquote {
+    border-left: 3px solid #b7ff00;
+    padding: 4px 0 4px clamp(14px, 2.4vw, 20px);
+    margin: clamp(20px, 3vw, 28px) 0;
+    font-size: clamp(13px, 1.5vw, 15px);
+    font-style: italic;
+    color: #0d0d0d;
+    line-height: 1.6;
+}
+
+.post-body-inner figure {
+    margin: clamp(20px, 3vw, 28px) 0;
+}
+
+.post-body-inner figure img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    display: block;
+    object-fit: cover;
+}
+
+.post-body-inner figcaption {
+    font-size: clamp(9.5px, 1vw, 10.5px);
+    color: #888888;
+    margin-top: 8px;
+    text-align: center;
+}
+
+.post-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: clamp(24px, 3.6vw, 32px);
+}
+
+.post-tags a {
+    font-size: clamp(9.5px, 1vw, 10.5px);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    color: #0d0d0d;
+    background: #f0f0f0;
+    border: 1px solid #ddd;
+    padding: 6px 12px;
+    border-radius: 999px;
+    transition: .2s ease;
+}
+
+.post-tags a:hover {
+    background: #b7ff00;
+    border-color: #b7ff00;
+    color: #0d0d0d;
+}
+
+.post-share {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: clamp(20px, 3vw, 26px);
+    padding-top: clamp(20px, 3vw, 26px);
+    border-top: 1px solid #ececec;
+}
+
+.post-share span {
+    font-size: clamp(9.5px, 1vw, 10.5px);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    color: #8a8a8a;
+}
+
+.post-share a {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f0f0f0;
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    color: #0d0d0d;
+    transition: .2s ease;
+}
+
+.post-share a svg {
+    width: 14px;
+    height: 14px;
+}
+
+.post-share a:hover {
+    background: #b7ff00;
+    border-color: #b7ff00;
+    transform: translateY(-2px);
+}
+
+.post-related {
+    background: #ffffff;
+    padding: 0 clamp(12px, 2.2vw, 18px) clamp(48px, 7vw, 70px);
+}
+
+.post-related-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+@media (max-width: 600px) {
+    .post-title {
+        font-size: clamp(17px, 4.6vw, 22px);
+    }
+}
