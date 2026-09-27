@@ -1123,7 +1123,7 @@ section {
     transition: transform .4s ease;
 }
 
-.blog-card:hover .blog-image img {
+.blog-image img:hover {
     transform: scale(1.05);
 }
 
