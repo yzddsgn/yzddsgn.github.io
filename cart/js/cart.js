@@ -57,6 +57,41 @@ let cart = [];
 
 
 // =====================================================
+// DETEKSI JENIS PRODUK
+// BERDASARKAN FOLDER PATH GAMBAR:
+//
+// .../product/tshirt/...  -> "tshirt"
+// .../product/mug/...     -> "mug"
+// .../product/poster/...  -> "poster"
+//
+// Dipakai nanti di halaman payment untuk
+// menentukan apakah kolom "Pilih Ukuran"
+// perlu ditampilkan atau tidak.
+// =====================================================
+
+function getProductType(imagePath) {
+
+    if (!imagePath) {
+        return "other";
+    }
+
+    if (imagePath.includes("/tshirt/")) {
+        return "tshirt";
+    }
+
+    if (imagePath.includes("/mug/")) {
+        return "mug";
+    }
+
+    if (imagePath.includes("/poster/")) {
+        return "poster";
+    }
+
+    return "other";
+}
+
+
+// =====================================================
 // KEY CART BERDASARKAN UID
 // =====================================================
 
@@ -458,6 +493,15 @@ function addCart(button) {
 
 
     // -------------------------------------------------
+    // DETEKSI JENIS PRODUK (tshirt/mug/poster)
+    // BERDASARKAN PATH GAMBAR
+    // -------------------------------------------------
+
+    const type =
+        getProductType(image);
+
+
+    // -------------------------------------------------
     // BUAT DATA PRODUK
     // -------------------------------------------------
 
@@ -471,7 +515,9 @@ function addCart(button) {
 
         category: category,
 
-        productClass: productClass
+        productClass: productClass,
+
+        type: type
 
     };
 
