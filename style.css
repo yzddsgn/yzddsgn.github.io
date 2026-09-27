@@ -1,0 +1,1812 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@400;500;600;700;800;900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    outline: none;
+}
+
+a,
+button,
+input,
+textarea,
+select,
+div {
+    -webkit-tap-highlight-color: transparent;
+}
+
+a:focus,
+button:focus,
+input:focus,
+textarea:focus,
+select:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+img {
+    -webkit-user-drag: none;
+    user-select: none;
+}
+
+html {
+    overflow-x: hidden;
+    width: 100%;
+}
+
+body {
+    background: #0d0d0d;
+    color: white;
+    overflow-x: hidden;
+    width: 100%;
+}
+
+/* ---- Kunci scroll body saat drawer menu terbuka ----
+   Pakai position:fixed (bukan cuma overflow:hidden) supaya
+   benar-benar terkunci di iOS Safari, yang sering masih bisa
+   "rubber-band scroll" di belakang walau overflow:hidden. ---- */
+body.menu-open {
+    position: fixed;
+    left: 0;
+    right: 0;
+    overflow: hidden;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+}
+
+header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, .85);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(183, 255, 0, .15);
+    z-index: 1000;
+    transition: transform .35s ease;
+}
+
+/* ---- NAV HIDE/SHOW ON SCROLL (mobile only, via JS) ---- */
+header.nav-hidden {
+    transform: translateY(-100%);
+}
+
+.nav {
+    position: relative;
+    max-width: 1100px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    padding: clamp(10px, 1.6vw, 13px) clamp(14px, 2vw, 18px);
+    gap: clamp(8px, 2vw, 15px);
+}
+
+.toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    grid-column: 1;
+    justify-self: start;
+    position: relative;
+    z-index: 2;
+    cursor: pointer;
+}
+
+/* Logo dipusatkan secara absolut terhadap .nav, jadi
+   posisinya presisi di tengah untuk semua ukuran layar
+   (desktop maupun mobile), sama seperti referensi. */
+.logo {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    z-index: 1;
+}
+
+.logo img {
+    height: clamp(20px, 3.2vw, 24px);
+    width: auto;
+    display: block;
+}
+
+.logo span {
+    color: #b7ff00;
+}
+
+/* ===================================================
+   MENU — off-canvas drawer dari kiri, dipakai di SEMUA
+   device (desktop pc/laptop & semua mobile termasuk
+   iPhone 4/5 ke atas). Sisi kanan halaman jadi redup
+   pakai trik box-shadow raksasa (tanpa markup tambahan).
+=================================================== */
+.menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: min(320px, 84vw);
+    height: 100dvh;
+    background: rgba(5, 5, 5, 0.98);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: clamp(70px, 10vw, 88px) 28px 28px;
+    gap: clamp(16px, 2.4vw, 20px);
+    font-size: clamp(14px, 1.8vw, 15.5px);
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    box-sizing: border-box;
+    z-index: 1500;
+    overflow-y: auto;
+    transform: translateX(-100%);
+    transition: transform .35s ease;
+}
+
+.menu.show {
+    transform: translateX(0);
+    box-shadow: 100vw 0 0 100vw rgba(0, 0, 0, .55);
+}
+
+.menu a {
+    width: 100%;
+    text-align: left;
+    font-weight: 600;
+    transition: color .2s ease;
+}
+
+.menu a:hover {
+    color: #b7ff00;
+}
+
+#active {
+    font-weight: bolder;
+    color: #b7ff00;
+}
+
+.menu #logoutBtn.mm,
+.menu button[id="logoutBtn mm"] {
+    align-self: flex-start;
+}
+
+/* ---- Grup expandable ala "+" (contoh: Info) ---- */
+.menu-group {
+    width: 100%;
+}
+
+.menu-group summary {
+    list-style: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    font-weight: 600;
+}
+
+.menu-group summary::-webkit-details-marker {
+    display: none;
+}
+
+.menu-group summary .menu-group-icon {
+    width: clamp(15px, 2.4vw, 17px);
+    height: clamp(15px, 2.4vw, 17px);
+    display: block;
+    margin-left: 10px;
+}
+
+.menu-group summary .icon-minus {
+    display: none;
+}
+
+.menu-group[open] summary .icon-plus {
+    display: none;
+}
+
+.menu-group[open] summary .icon-minus {
+    display: block;
+}
+
+.menu-group summary:hover {
+    color: #b7ff00;
+}
+
+.menu-submenu {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 12px;
+    padding-left: 4px;
+}
+
+.menu-submenu a {
+    font-size: .8em;
+    font-weight: 500;
+    text-transform: none;
+    letter-spacing: 0;
+    color: #cfcfcf;
+}
+
+.menu-submenu a:hover {
+    color: #b7ff00;
+}
+
+.nav-actions {
+    grid-column: 3;
+    justify-self: end;
+    position: relative;
+    z-index: 2;
+    display: flex;
+    gap: clamp(10px, 1.6vw, 13px);
+    align-items: center;
+}
+
+.cart {
+    cursor: pointer;
+}
+
+.cart img,
+.toggle img,
+.auth-btn img {
+    width: clamp(15px, 2.4vw, 17px);
+    height: clamp(15px, 2.4vw, 17px);
+    display: block;
+}
+
+.auth-btn {
+    border: none;
+    background: none;
+    color: inherit;
+    cursor: pointer;
+}
+
+.auth-btn:hover {
+    color: #b7ff00;
+}
+
+.user-photo {
+    width: clamp(32px, 8vw, 38px);
+    height: clamp(32px, 8vw, 38px);
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #b7ff00;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* ---- Close (X) button di dalam drawer menu.
+   Ukurannya disamakan dengan .cart img/.toggle img/.auth-btn img ---- */
+.menu-close {
+    position: absolute;
+    top: clamp(12px, 2.4vw, 18px);
+    left: clamp(14px, 3vw, 20px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 2;
+}
+
+.menu-close img {
+    width: clamp(15px, 2.4vw, 17px);
+    height: clamp(15px, 2.4vw, 17px);
+    display: block;
+}
+
+/* ===================================================
+   HERO — Erigo style
+=================================================== */
+.hero {
+    background: #ffffff;
+    padding: clamp(56px, 7vw, 64px) clamp(10px, 2.2vw, 16px) clamp(18px, 4vw, 28px);
+}
+
+.hero-frame {
+    position: relative;
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.hero-media {
+    width: 100%;
+    aspect-ratio: 16 / 8;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px;
+    transition: background-image .4s ease-in-out;
+}
+
+.hero-media::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(0deg, rgba(0, 0, 0, .75) 0%, rgba(0, 0, 0, .3) 35%, rgba(0, 0, 0, 0) 62%);
+    pointer-events: none;
+}
+
+.hero-content {
+    position: absolute;
+    left: clamp(12px, 2vw, 24px);
+    bottom: clamp(22px, 3.6vw, 32px);
+    z-index: 2;
+    max-width: 400px;
+    text-align: left;
+}
+
+.hero-content h1 {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(18px, 2.4vw, 28px);
+    font-weight: 400;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #fff;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, .5);
+    line-height: 1.15;
+}
+
+.hero-content h1::after {
+    content: "";
+    display: block;
+    width: 34px;
+    height: 3px;
+    background: #b7ff00;
+    margin: 8px 0 0;
+}
+
+.hero-content p {
+    font-size: clamp(10.5px, 1vw, 13px);
+    margin: 8px 0 clamp(10px, 1.8vw, 13px);
+    line-height: 1.6;
+    color: #e2e2e2;
+    max-width: 380px;
+}
+
+/* ===================================================
+   BTN
+=================================================== */
+.btn {
+    position: relative;
+    display: inline-block;
+    padding: clamp(8px, 1.4vw, 10px) clamp(16px, 2.6vw, 22px);
+    background: #b7ff00;
+    color: #0d0d0d;
+    font-family: 'Anton', sans-serif;
+    font-weight: 400;
+    font-size: clamp(11px, 1.6vw, 13px);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: none;
+    border-radius: clamp(4px, 0.8vw, 5px);
+    overflow: hidden;
+    z-index: 1;
+    transition: color .3s ease, transform .15s ease;
+}
+
+.btn::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: #0d0d0d;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform .35s ease;
+    z-index: -1;
+}
+
+.btn:hover {
+    color: #b7ff00;
+}
+
+.btn:hover::before {
+    transform: scaleX(1);
+}
+
+.btn:active {
+    transform: scale(.97);
+}
+
+.hero-dots {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: clamp(8px, 1.6vw, 14px);
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+.hero-dot {
+    width: 7px;
+    height: 7px;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    transition: transform 0.2s, background 0.2s;
+}
+
+.hero-dot:hover {
+    background: #b7ff00;
+    transform: scale(1.2);
+}
+
+.hero-dot.active {
+    background: #fff;
+    transform: scale(1.3);
+}
+
+@media (max-width: 1024px) {
+    .hero-media {
+        aspect-ratio: 16 / 10;
+    }
+}
+
+@media (max-width: 600px) {
+    .hero-media {
+        aspect-ratio: 4 / 3;
+        border-radius: 6px;
+    }
+
+    .hero-content {
+        max-width: 80%;
+    }
+}
+
+@media (max-width: 400px) {
+    .hero-media {
+        aspect-ratio: 1 / 1;
+    }
+
+    .hero-content {
+        max-width: 84%;
+    }
+}
+
+@media (max-width: 340px) {
+    .hero-media {
+        aspect-ratio: 4 / 5;
+    }
+
+    .hero-content {
+        max-width: 88%;
+    }
+
+    .hero-content h1 {
+        letter-spacing: 1px;
+    }
+}
+
+/* ===================================================
+   ABOUT (dalam hero, teks saja, tanpa foto)
+=================================================== */
+.hero-about {
+    padding: clamp(30px, 5vw, 44px) clamp(10px, 2.2vw, 16px) clamp(12px, 2.2vw, 18px);
+    text-align: center;
+}
+
+.hero-about-inner {
+    max-width: 420px;
+    margin: 0 auto;
+}
+
+.hero-about-inner h1 {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(20px, 3vw, 26px);
+    font-weight: 400;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #0d0d0d;
+    margin-bottom: 4px;
+}
+
+.hero-about-inner h1::after {
+    content: "";
+    display: block;
+    width: 46px;
+    height: 3px;
+    background: #b7ff00;
+    margin: 12px auto 18px;
+    border-radius: 2px;
+}
+
+.hero-about-inner p {
+    font-size: clamp(12.5px, 1.8vw, 13.5px);
+    line-height: 1.75;
+    color: #4a4a4a;
+    margin-bottom: 12px;
+}
+
+.hero-about-inner p:last-child {
+    margin-bottom: 0;
+}
+
+section {
+    padding: clamp(32px, 5vw, 52px) clamp(12px, 2.2vw, 18px);
+}
+
+.container {
+    max-width: 1100px;
+    margin: auto;
+}
+
+/* ===================================================
+   SHOP SECTION — BACKGROUND PUTIH (dipakai di Home & Shop page)
+=================================================== */
+#shop {
+    background: #ffffff;
+    color: #111111;
+    padding-top: clamp(28px, 5vw, 40px);
+}
+
+#shop .title {
+    color: #0d0d0d;
+}
+
+#shop .title::after {
+    content: "";
+    display: block;
+    width: 50px;
+    height: 4px;
+    background: #b7ff00;
+    margin-top: 10px;
+    border-radius: 2px;
+}
+
+#shop .subtitle {
+    color: #666666;
+}
+
+#shop .filter button {
+    background: #f0f0f0;
+    border: 1px solid #ddd;
+    color: #222;
+}
+
+#shop .filter button.active,
+#shop .filter button:hover {
+    background: #b7ff00;
+    border-color: #b7ff00;
+    color: #0d0d0d;
+}
+
+#shop .filter {
+    scrollbar-color: #b7ff00 #eaeaea;
+}
+
+#shop .filter::-webkit-scrollbar-track {
+    background: #eaeaea;
+}
+
+#shop .tag {
+    color: #5a8a00;
+}
+
+#shop .info h3 {
+    color: #111111;
+    font-weight: 600;
+}
+
+#shop .price {
+    color: #0d0d0d;
+}
+
+#shop .buy {
+    color: #0d0d0d;
+}
+
+/* ===================================================
+   TITLES / FILTER — sekarang scroll mode di SEMUA device
+   (PC/laptop & semua mobile), konsisten dengan .grid.
+=================================================== */
+.title {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(20px, 3vw, 27px);
+    font-weight: 400;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    position: relative;
+}
+
+.subtitle {
+    font-size: clamp(11.5px, 1.5vw, 13px);
+    color: #aaa;
+    margin-bottom: clamp(18px, 2.6vw, 24px);
+}
+
+.filter {
+    display: flex;
+    gap: clamp(8px, 1.2vw, 9px);
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    margin-bottom: clamp(16px, 2.2vw, 20px);
+    padding-bottom: 10px;
+    scrollbar-width: thin;
+    scrollbar-color: #b7ff00 #262626;
+}
+
+.filter::-webkit-scrollbar {
+    height: 6px;
+}
+
+.filter::-webkit-scrollbar-track {
+    background: #262626;
+    border-radius: 10px;
+}
+
+.filter::-webkit-scrollbar-thumb {
+    background: #b7ff00;
+    border-radius: 10px;
+}
+
+.filter button {
+    background: #1f1f1f;
+    border: 1px solid #2b2b2b;
+    color: white;
+    font-size: clamp(11px, 1.6vw, 12.5px);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    padding: clamp(7px, 1.2vw, 8px) clamp(11px, 1.8vw, 14px);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: .2s ease;
+    flex-shrink: 0;
+    scroll-snap-align: start;
+}
+
+.filter button.active,
+.filter button:hover {
+    background: #b7ff00;
+    border-color: #b7ff00;
+    color: black;
+}
+
+/* ===================================================
+   PRODUCT GRID — sekarang selalu horizontal-scroll
+   (pola sama dengan .blog-track), berlaku di SEMUA
+   ukuran layar termasuk PC/laptop. Khusus Shop page,
+   di-override jadi grid 3-kolom biasa (lihat
+   .shop-content .grid di bawah).
+=================================================== */
+.grid {
+    display: flex;
+    gap: clamp(12px, 1.6vw, 18px);
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 16px;
+    scrollbar-width: thin;
+    scrollbar-color: #b7ff00 #262626;
+}
+
+.grid::-webkit-scrollbar {
+    height: 6px;
+}
+
+.grid::-webkit-scrollbar-track {
+    background: #262626;
+    border-radius: 10px;
+}
+
+.grid::-webkit-scrollbar-thumb {
+    background: #b7ff00;
+    border-radius: 10px;
+}
+
+#shop .grid {
+    scrollbar-color: #b7ff00 #eaeaea;
+}
+
+#shop .grid::-webkit-scrollbar-track {
+    background: #eaeaea;
+}
+
+/* Card minimalis — ala toko distro/streetwear modern:
+   nggak ada border/box tebal, fokus ke foto & tipografi. */
+.card {
+    flex: 0 0 clamp(230px, 26vw, 280px);
+    max-width: 280px;
+    scroll-snap-align: start;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    overflow: visible;
+    position: relative;
+    transition: .3s ease;
+}
+
+.card img {
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    height: auto;
+    object-fit: cover;
+    border-radius: 6px;
+    filter: grayscale(6%) contrast(1.02);
+}
+
+.info {
+    padding: 10px 2px 0;
+}
+
+.tag {
+    display: block;
+    font-size: clamp(9px, 1.1vw, 10px);
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #b7ff00;
+    border: none;
+    background: none;
+    padding: 0;
+    margin-bottom: 5px;
+}
+
+/* ---- JUDUL PRODUK: satu baris, kepotong jadi "..."
+   kalau kepanjangan — murni CSS, otomatis menyesuaikan
+   lebar card di semua device. ---- */
+.info h3 {
+    font-size: clamp(12px, 1.3vw, 13.5px);
+    font-weight: 600;
+    line-height: 1.3;
+    margin-bottom: 4px;
+    color: inherit;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.price {
+    font-family: 'Montserrat', sans-serif;
+    font-size: clamp(12.5px, 1.3vw, 14px);
+    font-weight: 700;
+    letter-spacing: 0;
+    margin: 0 0 8px;
+}
+
+.buy {
+    display: inline-block;
+    width: auto;
+    padding: clamp(6px, .8vw, 7px) clamp(13px, 1.6vw, 16px);
+    border: 1px solid currentColor;
+    background: transparent;
+    color: #0d0d0d;
+    font-weight: 600;
+    font-size: clamp(10px, 1.1vw, 11px);
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: .2s ease;
+}
+
+.buy:hover {
+    background: #b7ff00;
+    border-color: #b7ff00;
+    color: #0d0d0d;
+}
+
+.delete {
+    display: inline-block;
+    width: auto;
+    padding: clamp(6px, .8vw, 7px) clamp(13px, 1.6vw, 16px);
+    border: 1px solid currentColor;
+    background: transparent;
+    color: #0d0d0d;
+    font-weight: 600;
+    font-size: clamp(10px, 1.1vw, 11px);
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: .2s ease;
+}
+
+.delete:hover {
+    background: #f50b0b;
+    border-color: #f50b0b;
+    color: white;
+}
+
+/* ===================================================
+   SHOP PAGE LAYOUT — filter kiri (vertikal), grid kanan 3 kolom
+   (override khusus, tidak pakai horizontal-scroll seperti
+   .grid default)
+=================================================== */
+.shop-layout {
+    display: flex;
+    align-items: flex-start;
+    gap: clamp(20px, 3vw, 36px);
+}
+
+.shop-sidebar {
+    flex: 0 0 clamp(160px, 18vw, 220px);
+    position: sticky;
+    top: clamp(80px, 10vw, 100px);
+}
+
+.shop-sidebar .title,
+.shop-sidebar .subtitle {
+    margin-bottom: clamp(14px, 2.5vw, 20px);
+}
+
+.shop-sidebar .filter {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    overflow-x: visible;
+    scroll-snap-type: none;
+    gap: clamp(8px, 1.6vw, 12px);
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.shop-sidebar .filter button {
+    width: 100%;
+    text-align: left;
+}
+
+.shop-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.shop-content .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    overflow-x: visible;
+    scroll-snap-type: none;
+    padding-bottom: 0;
+}
+
+.shop-content .grid .card {
+    flex: unset;
+}
+
+/* ---- Tablet & mode "Desktop site" di browser mobile: grid 2 kolom,
+   sidebar tetap kiri. Gap di-hardcode 18px (nilai maksimum clamp
+   yang dipakai .grid di versi PC/laptop) supaya jaraknya identik,
+   bukan ikut mengecil karena vw dari viewport yang lebih sempit. ---- */
+@media (max-width: 1024px) {
+    .shop-content .grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 18px;
+    }
+}
+
+/* ---- Mobile: sidebar jadi filter horizontal di atas, grid di bawah.
+   grid-template-columns dipaksa 1fr dengan !important supaya
+   selalu menang atas aturan tablet (1024px) di atas, berapa pun
+   urutan/spesifisitas nanti berubah. Berlaku dari 768px ke bawah
+   sampai layar paling kecil (320px / iPhone 4-5). ---- */
+@media (max-width: 768px) {
+    .shop-layout {
+        flex-direction: column;
+    }
+
+    .shop-sidebar {
+        position: static;
+        width: 100%;
+        flex: unset;
+    }
+
+    .shop-sidebar .filter {
+        flex-direction: row;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        overflow-y: hidden;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 14px;
+        scrollbar-width: thin;
+        scrollbar-color: #b7ff00 #e5e5e5;
+    }
+
+    .shop-sidebar .filter::-webkit-scrollbar {
+        height: 5px;
+    }
+
+    .shop-sidebar .filter::-webkit-scrollbar-track {
+        background: #e5e5e5;
+        border-radius: 10px;
+    }
+
+    .shop-sidebar .filter::-webkit-scrollbar-thumb {
+        background: #b7ff00;
+        border-radius: 10px;
+    }
+
+    .shop-sidebar .filter button {
+        width: auto;
+        text-align: center;
+        scroll-snap-align: start;
+    }
+
+    .shop-content .grid,
+    .shop-content .grid.grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* .shop-layout punya align-items:flex-start (dipakai untuk versi
+       desktop). Di mobile di-reset ke stretch supaya .shop-content
+       (dan .shop-sidebar) sama-sama selebar penuh container-nya. */
+    .shop-layout {
+        align-items: stretch;
+    }
+
+    /* Card produk Shop TIDAK lagi full-bleed — lebar kiri-kanannya
+       disamakan dengan .shop-sidebar, yaitu cuma mengikuti lebar
+       normal .container/.shop-content (padding bawaan <section>),
+       tanpa margin negatif/breakout apa pun. */
+    .shop-content .grid {
+        width: 100%;
+    }
+
+    .shop-content .grid .card {
+        width: 100% !important;
+        max-width: 100% !important;
+        flex: unset !important;
+        flex-basis: auto !important;
+    }
+}
+
+/* Shop page grid: 1 kolom di semua ukuran mobile
+   (termasuk iPhone 4/5 320px) — dipertegas lagi di sini
+   supaya aman walau ada perubahan lain di atas. */
+
+@media (max-width: 600px) {
+    .shop-content .grid {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* iPhone 4/5 (320px) */
+@media (max-width: 340px) {
+    .shop-sidebar .filter button {
+        padding: 8px 14px;
+        font-size: 11px;
+    }
+
+    .shop-content .grid {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* ===================================================
+   BLOG — pengganti section About lama
+   Card putih di atas background gelap, scroll horizontal
+   di semua ukuran layar (konsisten dengan pola grid
+   produk yang sudah ada).
+=================================================== */
+#blog {
+    background: #0d0d0d;
+    color: #ffffff;
+}
+
+#blog .title::after {
+    content: "";
+    display: block;
+    width: 50px;
+    height: 4px;
+    background: #b7ff00;
+    margin-top: 10px;
+    border-radius: 2px;
+}
+
+#blog .subtitle {
+    color: #999999;
+}
+
+.blog-track {
+    display: flex;
+    gap: clamp(12px, 1.6vw, 18px);
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 16px;
+    scrollbar-width: thin;
+    scrollbar-color: #b7ff00 #1a1a1a;
+}
+
+.blog-track::-webkit-scrollbar {
+    height: 6px;
+}
+
+.blog-track::-webkit-scrollbar-track {
+    background: #1a1a1a;
+    border-radius: 10px;
+}
+
+.blog-track::-webkit-scrollbar-thumb {
+    background: #b7ff00;
+    border-radius: 10px;
+}
+
+.blog-card {
+    flex: 0 0 clamp(230px, 26vw, 280px);
+    max-width: 280px;
+    scroll-snap-align: start;
+    background: #ffffff;
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, .35);
+}
+
+.blog-image {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+}
+
+.blog-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(6%) contrast(1.05);
+    transition: transform .4s ease;
+}
+
+.blog-card:hover .blog-image img {
+    transform: scale(1.05);
+}
+
+.blog-body {
+    padding: clamp(14px, 2vw, 17px);
+    color: #111111;
+    display: flex;
+    flex-direction: column;
+}
+
+.blog-label {
+    display: block;
+    font-size: clamp(10.5px, 1.3vw, 11.5px);
+    font-weight: 700;
+    color: #5a8a00;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    margin-bottom: 8px;
+}
+
+.blog-body h3 {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(14px, 1.8vw, 16px);
+    font-weight: 400;
+    line-height: 1.25;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    color: #0d0d0d;
+    margin-bottom: 10px;
+}
+
+.blog-body h3:hover {
+    color: #5a8a00;
+}
+
+.blog-ig {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #0d0d0d;
+    margin-bottom: 12px;
+    width: fit-content;
+    transition: color .2s ease;
+}
+
+.blog-ig svg {
+    width: 15px;
+    height: 15px;
+}
+
+.blog-ig span {
+    font-size: clamp(10.5px, 1.3vw, 11.5px);
+    font-weight: 600;
+}
+
+.blog-ig:hover {
+    color: #5a8a00;
+}
+
+.blog-body p {
+    font-size: clamp(11.5px, 1.4vw, 12.5px);
+    line-height: 1.6;
+    color: #555555;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* ===================================================
+   FOOTER
+=================================================== */
+#footer {
+    background-color: #050505;
+    color: #d9d9d9;
+    padding: clamp(24px, 4vw, 34px) clamp(14px, 2.2vw, 18px) 18px;
+    font-family: 'Montserrat', Arial, sans-serif;
+    width: 100%;
+    box-sizing: border-box;
+    border-top: 1px solid rgba(183, 255, 0, .1);
+}
+
+#footer * {
+    box-sizing: border-box;
+}
+
+.footer-container {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.footer-top {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr 1.2fr;
+    gap: clamp(18px, 2.6vw, 26px);
+}
+
+.footer-col h3 {
+    color: #ffffff;
+    font-size: clamp(12px, 1.6vw, 13.5px);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 0 0 13px;
+    position: relative;
+    padding-bottom: 7px;
+}
+
+.footer-col h3::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 32px;
+    height: 2px;
+    background: #b7ff00;
+}
+
+.footer-logo {
+    font-family: 'Anton', sans-serif;
+    color: #ffffff;
+    font-size: clamp(18px, 2.6vw, 21px);
+    font-weight: 400;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin: 0 0 8px;
+}
+
+.footer-tagline {
+    font-size: clamp(11.5px, 1.5vw, 12.5px);
+    line-height: 1.6;
+    color: #b3b3b3;
+    margin: 0 0 16px;
+    max-width: 260px;
+}
+
+.footer-social {
+    display: flex;
+    gap: 10px;
+}
+
+.footer-social a {
+    width: clamp(28px, 3.6vw, 32px);
+    height: clamp(28px, 3.6vw, 32px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #1a1a1a;
+    border: 1px solid #2b2b2b;
+    border-radius: 50%;
+    color: #ffffff;
+    transition: background 0.25s ease, transform 0.25s ease, border-color 0.25s ease, color .25s ease;
+}
+
+.footer-social a svg {
+    width: clamp(14px, 1.8vw, 16px);
+    height: clamp(14px, 1.8vw, 16px);
+}
+
+.footer-social a:hover {
+    background: #b7ff00;
+    color: #0d0d0d;
+    border-color: #b7ff00;
+    transform: translateY(-3px);
+}
+
+.footer-col ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.footer-col ul li {
+    margin-bottom: 8px;
+}
+
+.footer-col ul li a {
+    color: #b3b3b3;
+    text-decoration: none;
+    font-size: clamp(11.5px, 1.5vw, 12.5px);
+}
+
+.footer-col ul li a:hover {
+    color: #b7ff00;
+}
+
+.footer-contact li {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: clamp(11.5px, 1.5vw, 12.5px);
+    color: #b3b3b3;
+}
+
+.footer-contact li svg {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+    margin-top: 2px;
+    color: #b7ff00;
+}
+
+.footer-divider {
+    border: none;
+    border-top: 1px solid #2b2b2b;
+    margin: clamp(20px, 3.2vw, 28px) 0 16px;
+}
+
+.footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.footer-bottom small {
+    font-size: clamp(10.5px, 1.4vw, 11.5px);
+    color: #808080;
+}
+
+.footer-payment {
+    display: flex;
+    gap: 7px;
+    flex-wrap: wrap;
+}
+
+.footer-payment span {
+    font-size: clamp(9px, 1.2vw, 10px);
+    font-weight: 600;
+    color: #cccccc;
+    border: 1px solid #333;
+    padding: 3px 9px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+}
+
+@media (max-width: 1024px) {
+    .footer-top {
+        grid-template-columns: 1fr 1fr;
+        row-gap: 32px;
+    }
+}
+
+@media (max-width: 600px) {
+    #footer {
+        text-align: center;
+    }
+
+    .footer-top {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
+    .footer-tagline {
+        max-width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .footer-social {
+        justify-content: center;
+    }
+
+    .footer-col h3::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .footer-contact li {
+        justify-content: center;
+        text-align: left;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+
+/* ===================================================
+   MOBILE (<=768px): penyesuaian tambahan untuk shop &
+   blog carousel. Card di Home page (bukan Shop) diperlebar
+   full-bleed selebar layar, satu card per pandangan.
+   Nav/menu drawer sudah universal di base. Filter & grid
+   sudah scroll mode di semua device sejak base rule di atas,
+   jadi di sini cuma tambahan margin full-bleed untuk mobile.
+=================================================== */
+@media (max-width: 768px) {
+
+    /* Home page: margin full-bleed untuk grid saja.
+       Filter TIDAK full-bleed lagi supaya tombol pertamanya
+       tidak nempel/kepotong di tepi kiri layar — dia tetap
+       mengikuti padding container seperti biasa. */
+    section#shop:not(:has(.shop-layout)) .filter {
+        padding-bottom: 14px;
+    }
+
+    section#shop:not(:has(.shop-layout)) .grid {
+        margin: 0 -20px;
+        padding-left: 20px;
+        padding-right: 20px;
+        padding-bottom: 22px;
+    }
+
+    section#shop:not(:has(.shop-layout)) .card {
+        flex: 0 0 calc(100vw - 60px);
+        max-width: calc(100vw - 60px);
+        scroll-snap-align: center;
+        scroll-snap-stop: always;
+    }
+
+    section#shop:not(:has(.shop-layout)) .card img {
+        height: 62vw;
+        max-height: 380px;
+    }
+
+    section#shop:not(:has(.shop-layout)) .info {
+        padding: 12px 4px 0;
+    }
+
+    .blog-track {
+        margin: 0 -20px;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .blog-card {
+        flex: 0 0 calc(100vw - 60px);
+        max-width: calc(100vw - 60px);
+        scroll-snap-align: center;
+        scroll-snap-stop: always;
+    }
+}
+
+@media (max-width: 340px) {
+    section#shop:not(:has(.shop-layout)) .card {
+        flex: 0 0 calc(100vw - 44px);
+        max-width: calc(100vw - 44px);
+    }
+
+    section#shop:not(:has(.shop-layout)) .grid {
+        margin-left: -16px;
+        margin-right: -16px;
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    .blog-track {
+        margin: 0 -16px;
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    .blog-card {
+        flex: 0 0 calc(100vw - 44px);
+        max-width: calc(100vw - 44px);
+    }
+
+    .menu {
+        padding: 80px 20px 20px;
+    }
+}
+
+/* ===================================================
+   LANDSCAPE LOCK
+=================================================== */
+@media (orientation: landscape) and (max-width: 926px) and (max-height: 500px) {
+
+    header {
+        height: 55px;
+    }
+
+    .hero {
+        padding: 65px 16px 16px;
+    }
+
+    .hero-media {
+        aspect-ratio: 21 / 6;
+    }
+
+    .hero-content {
+        left: 20px;
+        bottom: 16px;
+        max-width: 320px;
+    }
+
+    .hero-content h1 {
+        font-size: clamp(16px, 3.4vw, 22px);
+    }
+
+    .hero-content h1::after {
+        width: 34px;
+        height: 3px;
+        margin: 6px 0 0;
+    }
+
+    .hero-content p {
+        font-size: clamp(9.5px, 1.8vw, 11px);
+        margin: 6px 0 10px;
+        line-height: 1.4;
+    }
+
+    .btn {
+        padding: 8px 20px;
+        font-size: clamp(10px, 2.1vw, 12px);
+    }
+
+    .hero-dots {
+        bottom: 8px;
+    }
+
+    .hero-about {
+        padding: 20px 16px 10px;
+    }
+
+    .hero-about-inner h1 {
+        font-size: clamp(16px, 3.4vw, 22px);
+    }
+
+    .hero-about-inner h1::after {
+        margin: 8px 0 10px;
+    }
+
+    .hero-about-inner p {
+        font-size: clamp(11px, 2vw, 13px);
+        line-height: 1.5;
+        margin-bottom: 8px;
+    }
+
+    section {
+        padding: 30px 20px;
+    }
+
+    .title {
+        font-size: clamp(18px, 3.5vw, 26px);
+        margin-bottom: 6px;
+    }
+
+    .subtitle {
+        font-size: clamp(11px, 2vw, 13px);
+        margin-bottom: 18px;
+    }
+
+    .blog-card {
+        flex: 0 0 300px;
+    }
+
+    .blog-image {
+        aspect-ratio: 16 / 9;
+    }
+
+    #footer {
+        padding: 18px 20px;
+    }
+
+    #footer .footer-logo {
+        font-size: 18px;
+    }
+
+    .menu {
+        padding: 70px 24px 24px;
+    }
+}
+
+
+
+/* ===================================================
+   BLOG POST (artikel tunggal) — TAMBAHAN, tempel di
+   paling bawah style.css yang sudah ada. Tidak menimpa
+   / mengubah rule apa pun yang sudah ada sebelumnya.
+   Dipakai di halaman /blogs/<slug>/, contoh:
+   /blogs/harmoni-tradisi-dan-modernitas-cerita-di-balik-desain-kaos-bandung/
+=================================================== */
+.post-hero {
+    background: #ffffff;
+    padding: clamp(90px, 14vw, 120px) clamp(12px, 2.2vw, 18px) 0;
+}
+
+.post-hero-frame {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.post-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: clamp(10px, 1.1vw, 11.5px);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    color: #666666;
+    margin-bottom: clamp(14px, 2.4vw, 18px);
+    transition: color .2s ease;
+}
+
+.post-back svg {
+    width: 13px;
+    height: 13px;
+}
+
+.post-back:hover {
+    color: #0d0d0d;
+}
+
+.post-hero-media {
+    width: 100%;
+    aspect-ratio: 16 / 8;
+    overflow: hidden;
+    border-radius: 10px;
+    background: #eeeeee;
+}
+
+.post-hero-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: grayscale(4%) contrast(1.02);
+}
+
+@media (max-width: 1024px) {
+    .post-hero-media {
+        aspect-ratio: 16 / 10;
+    }
+}
+
+@media (max-width: 600px) {
+    .post-hero-media {
+        aspect-ratio: 4 / 3;
+        border-radius: 6px;
+    }
+}
+
+@media (max-width: 400px) {
+    .post-hero-media {
+        aspect-ratio: 1 / 1;
+    }
+}
+
+.post-header {
+    background: #ffffff;
+    padding: clamp(24px, 4vw, 34px) clamp(12px, 2.2vw, 18px) 0;
+}
+
+.post-header-inner {
+    max-width: 780px;
+    margin: 0 auto;
+}
+
+/* Judul artikel — diperkecil dari sebelumnya (clamp(24px,4.4vw,40px)) */
+.post-title {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(19px, 3.2vw, 30px);
+    font-weight: 400;
+    line-height: 1.25;
+    letter-spacing: .5px;
+    text-transform: uppercase;
+    color: #0d0d0d;
+}
+
+/* Meta (kategori, tanggal, menit baca) — diperkecil */
+.post-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin-top: clamp(10px, 2vw, 14px);
+    font-size: clamp(9.5px, 1.1vw, 10.5px);
+    font-weight: 700;
+    letter-spacing: .5px;
+    text-transform: uppercase;
+    color: #8a8a8a;
+}
+
+.post-meta .post-cat {
+    color: #5a8a00;
+    background: #eef8d8;
+    padding: 3px 10px;
+    border-radius: 999px;
+}
+
+.post-body {
+    background: #ffffff;
+    color: #111111;
+    padding: clamp(24px, 4vw, 34px) clamp(12px, 2.2vw, 18px) clamp(48px, 7vw, 70px);
+}
+
+.post-body-inner {
+    max-width: 780px;
+    margin: 0 auto;
+}
+
+/* Paragraf isi artikel — diperkecil dari sebelumnya (clamp(14px,1.6vw,16px)) */
+.post-body-inner p {
+    font-size: clamp(12.5px, 1.3vw, 14px);
+    line-height: 1.8;
+    color: #333333;
+    margin-bottom: clamp(16px, 2.4vw, 20px);
+}
+
+/* Paragraf pembuka (lead) — diperkecil */
+.post-body-inner p.lead {
+    font-size: clamp(13.5px, 1.5vw, 15.5px);
+    color: #111111;
+    font-weight: 500;
+}
+
+.post-body-inner p em,
+.post-body-inner p i {
+    font-style: italic;
+}
+
+/* Sub-judul dalam artikel — diperkecil */
+.post-body-inner h2 {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(15.5px, 2vw, 19px);
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    color: #0d0d0d;
+    margin: clamp(28px, 4vw, 38px) 0 clamp(12px, 2vw, 16px);
+}
+
+/* Kutipan — diperkecil */
+.post-body-inner blockquote {
+    border-left: 3px solid #b7ff00;
+    padding: 4px 0 4px clamp(14px, 2.4vw, 20px);
+    margin: clamp(20px, 3vw, 28px) 0;
+    font-size: clamp(13px, 1.5vw, 15px);
+    font-style: italic;
+    color: #0d0d0d;
+    line-height: 1.6;
+}
+
+.post-body-inner figure {
+    margin: clamp(20px, 3vw, 28px) 0;
+}
+
+.post-body-inner figure img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    display: block;
+    object-fit: cover;
+}
+
+.post-body-inner figcaption {
+    font-size: clamp(9.5px, 1vw, 10.5px);
+    color: #888888;
+    margin-top: 8px;
+    text-align: center;
+}
+
+.post-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: clamp(24px, 3.6vw, 32px);
+}
+
+.post-tags a {
+    font-size: clamp(9.5px, 1vw, 10.5px);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    color: #0d0d0d;
+    background: #f0f0f0;
+    border: 1px solid #ddd;
+    padding: 6px 12px;
+    border-radius: 999px;
+    transition: .2s ease;
+}
+
+.post-tags a:hover {
+    background: #b7ff00;
+    border-color: #b7ff00;
+    color: #0d0d0d;
+}
+
+.post-share {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: clamp(20px, 3vw, 26px);
+    padding-top: clamp(20px, 3vw, 26px);
+    border-top: 1px solid #ececec;
+}
+
+.post-share span {
+    font-size: clamp(9.5px, 1vw, 10.5px);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    color: #8a8a8a;
+}
+
+.post-share a {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f0f0f0;
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    color: #0d0d0d;
+    transition: .2s ease;
+}
+
+.post-share a svg {
+    width: 14px;
+    height: 14px;
+}
+
+.post-share a:hover {
+    background: #b7ff00;
+    border-color: #b7ff00;
+    transform: translateY(-2px);
+}
+
+.post-related {
+    background: #ffffff;
+    padding: 0 clamp(12px, 2.2vw, 18px) clamp(48px, 7vw, 70px);
+}
+
+.post-related-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+@media (max-width: 600px) {
+    .post-title {
+        font-size: clamp(17px, 4.6vw, 22px);
+    }
+}
