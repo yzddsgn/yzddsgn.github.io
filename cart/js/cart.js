@@ -1020,6 +1020,14 @@ function buyNow(index) {
         JSON.stringify([product])
     );
 
+    // Simpan index aslinya di cart, supaya setelah
+    // pesanan berhasil dikirim, item ini bisa dihapus
+    // otomatis dari keranjang.
+    sessionStorage.setItem(
+        "checkoutIndexes",
+        JSON.stringify([index])
+    );
+
     // Pindah ke halaman payment
     window.location.href = "https://yzddsgn.biz.id/payment/";
 
