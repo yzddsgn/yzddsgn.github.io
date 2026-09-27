@@ -35,6 +35,30 @@ const auth = getAuth(app);
 let requiresSize = false;
 
 
+// =====================================================
+// LABEL JENIS PRODUK
+// Dipakai untuk menampilkan "(T-Shirt)" / "(Poster)" /
+// "(Mug)" di pesan WhatsApp yang dikirim ke owner.
+// =====================================================
+
+function getTypeLabel(type) {
+
+    if (type === "tshirt") {
+        return "T-Shirt";
+    }
+
+    if (type === "poster") {
+        return "Poster";
+    }
+
+    if (type === "mug") {
+        return "Mug";
+    }
+
+    return "";
+}
+
+
 onAuthStateChanged(auth, (user) => {
 
     if (!user) {
@@ -52,6 +76,20 @@ onAuthStateChanged(auth, (user) => {
 });
 
 function renderCheckout(products) {
+
+    // -----------------------------------------------
+    // PASTIKAN SETIAP PRODUK PUNYA QUANTITY (qty)
+    // Default 1 kalau belum ada / tidak valid.
+    // -----------------------------------------------
+
+    products.forEach(function (item) {
+
+        if (!item.qty || item.qty < 1) {
+            item.qty = 1;
+        }
+
+    });
+
 
     const container =
         document.getElementById("cartItems");
@@ -72,9 +110,11 @@ function renderCheckout(products) {
     itemCount.innerText =
         products.length + " Item";
 
-    products.forEach((item) => {
+    products.forEach((item, index) => {
 
-        grandTotal += item.price;
+        const qty = item.qty || 1;
+
+        grandTotal += item.price * qty;
 
         let image = item.image;
 
@@ -95,10 +135,33 @@ function renderCheckout(products) {
 
                     <span>${item.category}</span>
 
-                    <small>Qty : 1</small>
+                    <div class="qty-control">
+                        <button
+                            type="button"
+                            class="qty-btn"
+                            onclick="decreaseQty(${index})"
+                        >
+                            −
+                        </button>
+
+                        <span
+                            class="qty-value"
+                            id="qtyValue-${index}"
+                        >
+                            ${qty}
+                        </span>
+
+                        <button
+                            type="button"
+                            class="qty-btn"
+                            onclick="increaseQty(${index})"
+                        >
+                            +
+                        </button>
+                    </div>
 
                     <b>
-                        Rp${Number(item.price).toLocaleString("id-ID")}
+                        Rp${Number(item.price * qty).toLocaleString("id-ID")}
                     </b>
 
                 </div>
@@ -114,6 +177,17 @@ function renderCheckout(products) {
     total.innerText =
         "Rp" +
         grandTotal.toLocaleString("id-ID");
+
+
+    // -----------------------------------------------
+    // SIMPAN BALIK KE sessionStorage
+    // supaya perubahan qty ikut tersimpan
+    // -----------------------------------------------
+
+    sessionStorage.setItem(
+        "checkout",
+        JSON.stringify(products)
+    );
 
 
     // -----------------------------------------------
@@ -138,6 +212,54 @@ function renderCheckout(products) {
 
     }
 }
+
+
+// =====================================================
+// TAMBAH / KURANGI QUANTITY
+// =====================================================
+
+function increaseQty(index) {
+
+    const products =
+        JSON.parse(
+            sessionStorage.getItem("checkout")
+        ) || [];
+
+    if (!products[index]) {
+        return;
+    }
+
+    products[index].qty =
+        (products[index].qty || 1) + 1;
+
+    renderCheckout(products);
+}
+
+function decreaseQty(index) {
+
+    const products =
+        JSON.parse(
+            sessionStorage.getItem("checkout")
+        ) || [];
+
+    if (!products[index]) {
+        return;
+    }
+
+    products[index].qty =
+        Math.max(
+            1,
+            (products[index].qty || 1) - 1
+        );
+
+    renderCheckout(products);
+}
+
+// Fungsi harus dimasukkan ke window
+// karena dipanggil lewat onclick di HTML
+// yang dibuat dinamis oleh module ini.
+window.increaseQty = increaseQty;
+window.decreaseQty = decreaseQty;
 
 
 
@@ -339,6 +461,7 @@ document.getElementById("payNow").addEventListener("click", function () {
 
 
     // AMBIL PRODUK CHECKOUT
+    // (termasuk qty terbaru hasil +/- tadi)
 
     const products =
         JSON.parse(
@@ -367,12 +490,21 @@ document.getElementById("payNow").addEventListener("click", function () {
 
     products.forEach(function (product, index) {
 
-        total += Number(product.price);
+        const qty = product.qty || 1;
+
+        const itemTotal = Number(product.price) * qty;
+
+        total += itemTotal;
+
+        // Nama produk + label jenis: (T-Shirt) / (Poster) / (Mug)
+
+        const typeLabel = getTypeLabel(product.type);
 
         productText +=
             (index + 1) +
             ". " +
             product.name +
+            (typeLabel ? " (" + typeLabel + ")" : "") +
             "\n";
 
         // Baris "Ukuran" hanya ditampilkan
@@ -385,9 +517,11 @@ document.getElementById("payNow").addEventListener("click", function () {
         }
 
         productText +=
-            "   Jumlah: 1\n" +
-            "   Harga: Rp" +
-            Number(product.price).toLocaleString("id-ID") +
+            "   Jumlah: " + qty + "\n" +
+            "   Harga Satuan: Rp" +
+            Number(product.price).toLocaleString("id-ID") + "\n" +
+            "   Subtotal: Rp" +
+            itemTotal.toLocaleString("id-ID") +
             "\n\n";
 
     });
