@@ -940,7 +940,11 @@ section {
     .shop-content .grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 18px;
-        width: 100%;
+    }
+
+    .shop-content .grid .card {
+        width: 100% !important;
+        max-width: 100% !important;
     }
 }
 
