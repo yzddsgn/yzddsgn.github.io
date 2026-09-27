@@ -18,6 +18,15 @@
 // Tidak perlu ubah angka apa pun kalau nambah produk baru —
 // card baru otomatis kebaca karena selalu query ulang isi
 // .shop-content .grid setiap kali render, tidak hardcode.
+//
+// PERILAKU PAGINATION (sudah otomatis per kelipatan 21):
+// - Total 30 card       -> tampil 21, tombol "Lihat Lainnya (9)"
+//   klik sekali          -> tampil 30, tombol hilang
+// - Total 45 card       -> tampil 21, tombol "Lihat Lainnya (24)"
+//   klik pertama         -> tampil 42, tombol "Lihat Lainnya (3)"
+//   klik kedua           -> tampil 45, tombol hilang
+// Jadi tombol otomatis MUNCUL LAGI tiap 21 card berikutnya,
+// selama masih ada sisa card yang cocok filter aktif.
 // =====================================================
 
 (function () {
@@ -230,6 +239,40 @@
                     handleShowMore
                 );
             }
+
+
+            // ---------------------------------------------
+            // AUTO-UPDATE KALAU ADA CARD BARU DITAMBAHKAN
+            // SECARA DINAMIS (bukan cuma di HTML statis)
+            //
+            // Contoh: kalau suatu saat produk di-load lewat
+            // JS lain (fetch API, dsb) dan card baru di-append
+            // ke dalam .shop-content .grid, observer ini akan
+            // otomatis panggil render() lagi supaya:
+            // - card ke-22 dst tetap ikut disembunyikan sesuai
+            //   PAGE_SIZE yang sedang berjalan
+            // - angka sisa di tombol "Lihat Lainnya" ikut update
+            //
+            // Kalau kamu cuma nambah <div class="card"> lewat
+            // HTML biasa (tidak lewat JS), observer ini TIDAK
+            // diperlukan — render() di page-load saja sudah cukup.
+            // ---------------------------------------------
+
+            var grid = getGrid();
+
+            if (grid && window.MutationObserver) {
+
+                var observer = new MutationObserver(
+                    function () {
+                        render({ animateNew: false });
+                    }
+                );
+
+                observer.observe(grid, {
+                    childList: true
+                });
+            }
+
         }
     );
 
