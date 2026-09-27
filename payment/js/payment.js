@@ -25,6 +25,16 @@ const app =
 
 const auth = getAuth(app);
 
+
+// =====================================================
+// PENANDA: apakah pesanan ini butuh pilih ukuran?
+// (true kalau minimal 1 produk berjenis "tshirt")
+// Diisi ulang setiap kali checkout dimuat.
+// =====================================================
+
+let requiresSize = false;
+
+
 onAuthStateChanged(auth, (user) => {
 
     if (!user) {
@@ -104,6 +114,29 @@ function renderCheckout(products) {
     total.innerText =
         "Rp" +
         grandTotal.toLocaleString("id-ID");
+
+
+    // -----------------------------------------------
+    // CEK APAKAH PESANAN BERISI T-SHIRT
+    // Kalau tidak ada sama sekali (misal cuma mug
+    // atau poster), kolom "Pilih Ukuran" disembunyikan
+    // dan tidak wajib diisi.
+    // -----------------------------------------------
+
+    requiresSize =
+        products.some(function (item) {
+            return item.type === "tshirt";
+        });
+
+    const sizeSection =
+        document.getElementById("sizeSection");
+
+    if (sizeSection) {
+
+        sizeSection.style.display =
+            requiresSize ? "" : "none";
+
+    }
 }
 
 
@@ -278,25 +311,34 @@ document.getElementById("payNow").addEventListener("click", function () {
         payment.value;
 
 
-    // AMBIL PRODUK CHECKOUT
+    // AMBIL UKURAN
+    // (hanya wajib kalau pesanan mengandung T-Shirt)
 
-    const size =
-        document.querySelector(
-            'input[name="size"]:checked'
-        );
+    let selectedSize = "";
 
-    if (!size) {
+    if (requiresSize) {
 
-        showPaymentAlert(
-            "Pilih Ukuran",
-            "Silahkan pilih ukuran T-Shirt terlebih dahulu.",
-            "warning"
-        );
+        const size =
+            document.querySelector(
+                'input[name="size"]:checked'
+            );
 
-        return;
+        if (!size) {
+
+            showPaymentAlert(
+                "Pilih Ukuran",
+                "Silahkan pilih ukuran T-Shirt terlebih dahulu.",
+                "warning"
+            );
+
+            return;
+        }
+
+        selectedSize = size.value;
     }
 
-    const selectedSize = size.value;
+
+    // AMBIL PRODUK CHECKOUT
 
     const products =
         JSON.parse(
@@ -331,9 +373,18 @@ document.getElementById("payNow").addEventListener("click", function () {
             (index + 1) +
             ". " +
             product.name +
-            "\n" +
-            "   Ukuran: " + selectedSize +
-            "\n" +
+            "\n";
+
+        // Baris "Ukuran" hanya ditampilkan
+        // untuk produk berjenis T-Shirt
+        if (product.type === "tshirt") {
+
+            productText +=
+                "   Ukuran: " + selectedSize + "\n";
+
+        }
+
+        productText +=
             "   Jumlah: 1\n" +
             "   Harga: Rp" +
             Number(product.price).toLocaleString("id-ID") +
