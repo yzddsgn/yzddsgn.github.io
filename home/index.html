@@ -498,6 +498,22 @@
                 window.scrollTo(0, scrollLockY);
             }
         }
+
+        // Tutup menu kalau user klik/tap di luar area menu
+        document.addEventListener("click", function (event) {
+            const menu = document.getElementById("menu");
+
+            if (!menu.classList.contains("show")) return;
+
+            // Klik di dalam menu: abaikan
+            if (menu.contains(event.target)) return;
+
+            // Klik tombol hamburger: biarkan onclick="toggleMenu()" yang urus
+            // (kalau tidak dikecualikan, menu akan menutup lalu terbuka lagi)
+            if (event.target.closest(".toggle")) return;
+
+            toggleMenu();
+        });
     </script>
 
 </body>
