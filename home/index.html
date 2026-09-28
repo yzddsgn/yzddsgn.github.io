@@ -499,21 +499,28 @@
             }
         }
 
-        // Tutup menu kalau user klik/tap di luar area menu
-        document.addEventListener("click", function (event) {
+        // Tutup menu saat klik/tap di luar menu, dan cegah klik itu
+        // "tembus" ke elemen di belakangnya (link, tombol, card, dll).
+        function closeMenuOnOutsideClick(event) {
             const menu = document.getElementById("menu");
 
             if (!menu.classList.contains("show")) return;
 
-            // Klik di dalam menu: abaikan
+            // Klik di dalam menu: biarkan berjalan normal
             if (menu.contains(event.target)) return;
 
             // Klik tombol hamburger: biarkan onclick="toggleMenu()" yang urus
-            // (kalau tidak dikecualikan, menu akan menutup lalu terbuka lagi)
             if (event.target.closest(".toggle")) return;
 
+            // Klik di luar menu: hentikan event supaya tidak sampai ke elemen target
+            event.preventDefault();
+            event.stopPropagation();
+
             toggleMenu();
-        });
+        }
+
+        // true = fase capture, jalan SEBELUM handler elemen lain (onclick, link, dll)
+        document.addEventListener("click", closeMenuOnOutsideClick, true);
     </script>
 
 </body>
