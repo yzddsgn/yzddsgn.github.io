@@ -360,6 +360,29 @@
                 window.scrollTo(0, scrollLockY);
             }
         }
+
+        // Tutup menu saat klik/tap di luar menu, dan cegah klik itu
+        // "tembus" ke elemen di belakangnya (link, tombol, card, dll).
+        function closeMenuOnOutsideClick(event) {
+            const menu = document.getElementById("menu");
+
+            if (!menu.classList.contains("show")) return;
+
+            // Klik di dalam menu: biarkan berjalan normal
+            if (menu.contains(event.target)) return;
+
+            // Klik tombol hamburger: biarkan onclick="toggleMenu()" yang urus
+            if (event.target.closest(".toggle")) return;
+
+            // Klik di luar menu: hentikan event supaya tidak sampai ke elemen target
+            event.preventDefault();
+            event.stopPropagation();
+
+            toggleMenu();
+        }
+
+        // true = fase capture, jalan SEBELUM handler elemen lain (onclick, link, dll)
+        document.addEventListener("click", closeMenuOnOutsideClick, true);
     </script>
 
 </body>
