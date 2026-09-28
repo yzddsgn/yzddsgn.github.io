@@ -1878,7 +1878,6 @@ section {
      (murni berdasarkan lebar viewport, bukan device).
    - 1 kolom di semua ukuran mobile responsive (<=768px).
 =================================================== */
-
 #blogsPage {
     background: #ffffff;
     color: #111111;
@@ -1992,4 +1991,97 @@ section {
     .blog-list-body h3 {
         font-size: 14px;
     }
+}
+
+
+
+/* ===================================================
+   MENU DRAWER — gaya ala referensi (Hooligans)
+   ADDON: tempel di paling bawah style.css.
+   HTML tidak diubah. Ukuran pakai clamp() supaya
+   menyesuaikan semua device (iPhone 4/5 s.d. desktop).
+=================================================== */
+.menu {
+    width: min(340px, 86vw);
+    background: #181818;
+    padding: clamp(72px, 16vw, 90px) clamp(20px, 6vw, 30px) 30px;
+    gap: 0;
+    align-items: stretch;
+    justify-content: flex-start;
+    font-size: clamp(12.5px, 3.6vw, 15px);
+    font-weight: 500;
+    letter-spacing: clamp(2px, .8vw, 3px);
+    text-transform: uppercase;
+}
+
+/* Tombol X di kiri atas, sejajar padding drawer */
+.menu-close {
+    top: clamp(22px, 6vw, 34px);
+    left: clamp(20px, 6vw, 30px);
+}
+
+.menu-close img {
+    width: clamp(15px, 4vw, 18px);
+    height: clamp(15px, 4vw, 18px);
+}
+
+/* Item utama + judul grup: garis pemisah tipis */
+.menu>a,
+.menu-group {
+    border-bottom: 1px solid #3a3a3a;
+}
+
+.menu>a {
+    display: block;
+    padding: clamp(16px, 4.6vw, 22px) 0;
+    font-weight: 500;
+    color: #ffffff;
+}
+
+.menu>a:hover,
+.menu-group summary:hover {
+    color: #b7ff00;
+}
+
+#active {
+    font-weight: 500;
+    color: #b7ff00;
+}
+
+.menu-group summary {
+    padding: clamp(16px, 4.6vw, 22px) 0;
+    font-weight: 500;
+    color: #ffffff;
+}
+
+.menu-group summary .menu-group-icon {
+    width: clamp(12px, 3.4vw, 14px);
+    height: clamp(12px, 3.4vw, 14px);
+    margin-left: 12px;
+}
+
+/* Isi submenu saat grup terbuka */
+.menu-submenu {
+    gap: 0;
+    margin-top: 0;
+    padding: 0 0 clamp(10px, 3vw, 14px) 2px;
+}
+
+.menu-submenu a {
+    display: block;
+    padding: clamp(8px, 2.4vw, 10px) 0;
+    font-size: .86em;
+    font-weight: 400;
+    letter-spacing: clamp(1px, .5vw, 1.6px);
+    text-transform: uppercase;
+    color: #b5b5b5;
+}
+
+.menu-submenu a:hover {
+    color: #b7ff00;
+}
+
+.menu .auth-btn {
+    margin-top: 14px;
+    align-self: flex-start;
 }
