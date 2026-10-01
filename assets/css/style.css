@@ -2085,3 +2085,50 @@ section {
     margin-top: 14px;
     align-self: flex-start;
 }
+
+
+
+/* ===================================================
+   HERO BANNERS — ADDON
+   2 kolom di PC/laptop & "desktop site" browser mobile,
+   1 kolom ke bawah di semua ukuran mobile (<=768px).
+   Lebar & rata tengah mengikuti .hero-frame.
+=================================================== */
+.hero-banners {
+    width: 100%;
+    max-width: 1100px;
+    margin: clamp(12px, 2vw, 18px) auto 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: clamp(12px, 1.6vw, 18px);
+}
+
+.hero-banner {
+    display: block;
+    overflow: hidden;
+    border-radius: 10px;
+    background: #eeeeee;
+}
+
+.hero-banner img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform .4s ease;
+}
+
+.hero-banner:hover img {
+    transform: scale(1.03);
+}
+
+@media (max-width: 768px) {
+    .hero-banners {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .hero-banner {
+        border-radius: 6px;
+    }
+}
