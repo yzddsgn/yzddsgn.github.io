@@ -2372,19 +2372,3 @@ section#shop .info {
         margin-bottom: 18px;
     }
 }
-
-/* FIX: lebar card New Arrivals selalu seragam, judul panjang tidak melebarkan card */
-.na-card {
-    min-width: 0;
-    width: clamp(230px, 26vw, 280px);
-    flex: 0 0 clamp(230px, 26vw, 280px);
-}
-
-.na-info {
-    min-width: 0;
-}
-
-.na-name {
-    display: block;
-    max-width: 100%;
-}
