@@ -2137,10 +2137,12 @@ section {
 
 /* ===================================================
    NEW ARRIVALS — ADDON
-   Sama seperti .grid di #shop (horizontal scroll),
-   tapi tanpa subtitle & filter. Karena style #shop
-   di-scope dengan "#shop ...", di sini diduplikasi
-   khusus untuk #new-arrivals.
+   Ukuran card disamakan dengan .blog-card:
+   flex: 0 0 clamp(230px, 26vw, 280px), max 280px,
+   gap clamp(12px, 1.6vw, 18px), gambar rasio 4/3.
+   Jadi di PC/laptop dan "desktop site" HP ukurannya
+   identik dengan card di section "From The Blog".
+   Tanpa subtitle & filter.
 =================================================== */
 #new-arrivals {
     background: #ffffff;
@@ -2166,12 +2168,27 @@ section {
     border-radius: 2px;
 }
 
+/* Track: pola sama dengan .blog-track */
 #new-arrivals .grid {
+    gap: clamp(12px, 1.6vw, 18px);
+    padding-bottom: 16px;
     scrollbar-color: #b7ff00 #eaeaea;
 }
 
 #new-arrivals .grid::-webkit-scrollbar-track {
     background: #eaeaea;
+}
+
+/* Card: ukuran sama dengan .blog-card */
+#new-arrivals .card {
+    flex: 0 0 clamp(230px, 26vw, 280px);
+    max-width: 280px;
+    scroll-snap-align: start;
+}
+
+#new-arrivals .card img {
+    aspect-ratio: 4 / 3;
+    height: auto;
 }
 
 #new-arrivals .tag {
@@ -2207,8 +2224,24 @@ section {
     pointer-events: none;
 }
 
-/* Mobile: card full-bleed, satu card per pandangan
-   (sama seperti #shop di Home) */
+#new-arrivals .show-more-wrap {
+    margin-top: clamp(4px, 1vw, 8px);
+    padding-bottom: clamp(20px, 3vw, 28px);
+}
+
+#new-arrivals .show-more-btn {
+    display: inline-block;
+    text-decoration: none;
+    color: #0d0d0d;
+}
+
+#new-arrivals .show-more-btn:hover {
+    background: #0d0d0d;
+    color: #ffffff;
+}
+
+/* Mobile (<=768px): full-bleed, satu card per pandangan,
+   sama seperti .blog-card */
 @media (max-width: 768px) {
     #new-arrivals .grid {
         margin: 0 -20px;
@@ -2251,63 +2284,5 @@ section {
 @media (orientation: landscape) and (max-width: 926px) and (max-height: 500px) {
     #new-arrivals {
         padding: 30px 20px 0;
-    }
-}
-
-/* ===================================================
-   NEW ARRIVALS: LOCK UKURAN DESKTOP
-   Berlaku untuk semua lebar > 768px (PC, laptop, dan
-   "desktop site" di browser HP, yang lebarnya ~980px).
-   Nilai di-hardcode (bukan vw/clamp) supaya identik
-   dengan tampilan PC/laptop.
-=================================================== */
-@media (min-width: 769px) {
-    #new-arrivals {
-        padding: 40px 18px 0;
-    }
-
-    #new-arrivals .title {
-        font-size: 27px;
-        margin-bottom: 24px;
-    }
-
-    #new-arrivals .grid {
-        gap: 18px;
-        margin: 0;
-        padding: 0 0 16px;
-    }
-
-    #new-arrivals .card {
-        flex: 0 0 280px;
-        max-width: 280px;
-        scroll-snap-align: start;
-        scroll-snap-stop: normal;
-    }
-
-    #new-arrivals .card img {
-        height: auto;
-        max-height: none;
-        aspect-ratio: 4 / 3;
-    }
-
-    #new-arrivals .info {
-        padding: 10px 2px 0;
-    }
-
-    #new-arrivals .info h3 {
-        font-size: 13.5px;
-    }
-
-    #new-arrivals .price {
-        font-size: 14px;
-    }
-
-    #new-arrivals .buy {
-        font-size: 11px;
-        padding: 7px 16px;
-    }
-
-    .badge-new {
-        font-size: 10.5px;
     }
 }
