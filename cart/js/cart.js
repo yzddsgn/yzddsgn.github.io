@@ -391,11 +391,11 @@ function addCart(button) {
 
 
     // -------------------------------------------------
-    // CARI CARD
+    // CARI CARD (mendukung .card dan .na-card)
     // -------------------------------------------------
 
     const card =
-        button.closest(".card");
+        button.closest(".card, .na-card");
 
     if (!card) {
 
@@ -425,7 +425,7 @@ function addCart(button) {
     // -------------------------------------------------
 
     const tagElement =
-        card.querySelector(".tag");
+        card.querySelector(".tag, .na-tag");
 
     const category =
         tagElement
@@ -451,7 +451,7 @@ function addCart(button) {
     // -------------------------------------------------
 
     const priceElement =
-        card.querySelector(".price");
+        card.querySelector(".price, .na-price");
 
     const priceText =
         priceElement
@@ -466,11 +466,7 @@ function addCart(button) {
 
     // -------------------------------------------------
     // AMBIL CLASS PRODUK
-    // CONTOH:
-    //
-    // card graphic
-    // card hardcore
-    // card deathcore
+    // (abaikan "card" dan "na-card")
     // -------------------------------------------------
 
     let productClass = "";
@@ -480,7 +476,8 @@ function addCart(button) {
     ) {
 
         if (
-            className !== "card"
+            className !== "card" &&
+            className !== "na-card"
         ) {
 
             productClass =
