@@ -2146,6 +2146,11 @@ section#shop .info {
    memakai class sendiri supaya tidak bentrok.
    Scroll horizontal di SEMUA device.
 =================================================== */
+#na-section .na-card,
+#na-section .na-info {
+    min-width: 0;
+}
+
 #na-section {
     background: #ffffff;
     color: #111111;
