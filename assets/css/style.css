@@ -2326,15 +2326,6 @@ section#shop .info {
 
 /* ---- Mobile (<=768px): full-bleed, 1 card per pandangan ---- */
 @media (max-width: 768px) {
-    ::-webkit-scrollbar {
-        display: none;
-    }
-
-    html,
-    body {
-        scrollbar-width: none;
-    }
-
     .na-track {
         margin: 0 -20px;
         padding-left: 20px;
