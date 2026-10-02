@@ -551,6 +551,11 @@ section {
 /* ===================================================
    SHOP SECTION — BACKGROUND PUTIH (dipakai di Home & Shop page)
 =================================================== */
+section#shop .card,
+section#shop .info {
+    min-width: 0;
+}
+
 #shop {
     background: #ffffff;
     color: #111111;
@@ -2366,4 +2371,20 @@ section {
         font-size: clamp(11px, 2vw, 13px);
         margin-bottom: 18px;
     }
+}
+
+/* FIX: lebar card New Arrivals selalu seragam, judul panjang tidak melebarkan card */
+.na-card {
+    min-width: 0;
+    width: clamp(230px, 26vw, 280px);
+    flex: 0 0 clamp(230px, 26vw, 280px);
+}
+
+.na-info {
+    min-width: 0;
+}
+
+.na-name {
+    display: block;
+    max-width: 100%;
 }
