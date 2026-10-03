@@ -55,6 +55,21 @@ function filterProduct(category, el) {
 
 const heroSlides = [
     {
+        image: "https://yzddsgn.github.io/assets1/product/model/model 7.jpg",
+        title: "MOSH PIT - HARDCORE EDITION",
+        text: "Representasi Energi & Sikap Skena Hardcore"
+    },
+    {
+        image: "https://yzddsgn.github.io/assets1/product/model/model 4.jpg",
+        title: "CRAFTED FOR THE CHAOS",
+        text: "Detail sablon distressed typography presisi dipadukan dengan logo Gothic YZD DSGN."
+    },
+    {
+        image: "https://yzddsgn.github.io/assets1/product/model/model 3.jpg",
+        title: "HEAVY TRACKS, HEAVY APPAREL",
+        text: "Putar playlist terberatmu, pakai outfit paling solid! MOSH PIT T-Shirt dirancang buat kamu yang menikmati energi musik hardcore."
+    },
+    {
         image: "https://yzddsgn.github.io/assets1/product/model/model 1.jpg",
         title: "BDG - EST. 1810",
         text: "Bandung lahir pada 25 September 1810, ketika Bupati R.A. Wiranatakusumah II."
@@ -73,11 +88,6 @@ const heroSlides = [
         image: "https://yzddsgn.github.io/assets1/product/model/model 5.jpg",
         title: "GARUT - CITY MAP EDITION",
         text: "Tampak Belakang: Eksplorasi Visual, Peta Wilayah, & Narasi Kekayaan Garut."
-    },
-    {
-        image: "https://yzddsgn.github.io/assets1/product/model/model 4.jpg",
-        title: "GRAPHIC EDITION",
-        text: "Desain ini merepresentasikan tekanan hidup di lingkungan yang penuh komentar dan rasa iri."
     }
 ];
 
