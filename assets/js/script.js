@@ -55,6 +55,16 @@ function filterProduct(category, el) {
 
 const heroSlides = [
     {
+        image: "https://yzddsgn.github.io/assets1/product/model/model 8.jpg",
+        title: "BACK TO GARUT - MINIMALIST GRAPHIC TICKET T-SHIRT",
+        text: "Tampilkan gaya streetwear kasual dan aesthetic kamu dengan kaos Back To Garut!"
+    },
+    {
+        image: "https://yzddsgn.github.io/assets1/product/model/model 10.jpg",
+        title: "BACK TO GARUT - YZD DSGN EDITION GRAPHIC T-SHIRT",
+        text: "Sangat pas dipadukan dengan celana jeans, cargo, atau outer untuk tampilan santai sehari-hari."
+    },
+    {
         image: "https://yzddsgn.github.io/assets1/product/model/model 7.jpg",
         title: "MOSH PIT - HARDCORE EDITION",
         text: "Representasi Energi & Sikap Skena Hardcore"
