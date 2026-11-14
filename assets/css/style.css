@@ -1725,15 +1725,21 @@ section#shop .info {
 }
 
 /* Paragraf isi artikel — diperkecil dari sebelumnya (clamp(14px,1.6vw,16px)) */
-.post-body-inner p li {
+.post-body-inner p {
     font-size: clamp(12.5px, 1.3vw, 14px);
     line-height: 1.8;
     color: #333333;
-    margin-bottom: clamp(16px, 2.4vw, 20px);
+    margin: clamp(12px, 2vw, 16px) 0 clamp(20px, 3vw, 26px);
 }
 
 .post-body-inner li {
     list-style-type: disc;
+    font-size: clamp(12.5px, 1.3vw, 14px);
+    line-height: 1.8;
+    color: #333333;
+    margin-left: clamp(22px, 4vw, 30px);
+    padding-left: 4px;
+    margin-bottom: 8px;
 }
 
 /* Paragraf pembuka (lead) — diperkecil */
