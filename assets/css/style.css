@@ -1725,11 +1725,15 @@ section#shop .info {
 }
 
 /* Paragraf isi artikel — diperkecil dari sebelumnya (clamp(14px,1.6vw,16px)) */
-.post-body-inner p {
+.post-body-inner p li {
     font-size: clamp(12.5px, 1.3vw, 14px);
     line-height: 1.8;
     color: #333333;
     margin-bottom: clamp(16px, 2.4vw, 20px);
+}
+
+.post-body-inner li {
+    list-style-type: disc;
 }
 
 /* Paragraf pembuka (lead) — diperkecil */
